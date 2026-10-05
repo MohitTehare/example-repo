@@ -13,9 +13,9 @@ public class NaukriBoostAuto extends BaseTest {
         page.navigate("https://www.naukri.com/naukri360");
         page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Login")).click();
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email ID / Username")).click();
-        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email ID / Username")).fill("mmt");
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email ID / Username")).fill(USER_NAME);
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password")).click();
-        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password")).fill("mmt");
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password")).fill(USER_PAS);
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Show")).click();
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Login").setExact(true)).click();
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Next")).click();
