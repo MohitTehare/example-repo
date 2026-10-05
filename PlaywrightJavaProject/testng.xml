@@ -1,0 +1,8 @@
+<suit name ="PalywrightSuit">
+    <test name="BasicTests">
+    <classes>
+        <class name="tests.FirstTest" />
+    </classes>
+    </test>
+
+</suit>
