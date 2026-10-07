@@ -11,8 +11,6 @@ import org.testng.annotations.BeforeMethod;
 import com.microsoft.playwright.*;
 import java.nio.file.Paths;
 
-
-
 public class BaseTest {
     protected Playwright playwright;
     protected Browser browser;
@@ -24,7 +22,7 @@ public class BaseTest {
         playwright = Playwright.create();
 
         browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(true));
+                new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(5000));
 
         context = browser.newContext(new Browser.NewContextOptions()
                 .setViewportSize(1920, 1080)
