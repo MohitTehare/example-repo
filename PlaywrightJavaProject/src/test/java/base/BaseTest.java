@@ -40,16 +40,23 @@ public class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result) {
-        // 1. Capture the screenshot FIRST, while the page is still open
         if (result.getStatus() == ITestResult.FAILURE && page != null) {
             try {
                 System.out.println("FAILED PAGE URL: " + page.url());
                 System.out.println("FAILED PAGE TITLE: " + page.title());
+
+                String bodyText = page.locator("body").innerText();
+                System.out.println("PAGE TEXT (first 1500 chars): "
+                        + bodyText.substring(0, Math.min(1500, bodyText.length())));
+
+                System.out.println("LINKS ON PAGE: "
+                        + page.getByRole(com.microsoft.playwright.options.AriaRole.LINK).allInnerTexts());
+
                 page.screenshot(new Page.ScreenshotOptions()
                         .setPath(Paths.get("target/surefire-reports/failure.png"))
                         .setFullPage(true));
             } catch (Exception e) {
-                System.out.println("Could not capture screenshot: " + e.getMessage());
+                System.out.println("Could not capture page details: " + e.getMessage());
             }
         }
 
