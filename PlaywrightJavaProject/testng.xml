@@ -1,8 +1,14 @@
-<suit name ="PalywrightSuit">
-    <test name="BasicTests">
-    <classes>
-        <class name="tests.NaukriBoostAuto" />
-    </classes>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Naukri Boost Automation Suite"
+       verbose="1"
+       parallel="false">
+
+    <test name="NaukriBoostAuto Test">
+        <classes>
+            <class name="tests.NaukriBoostAuto"/>
+        </classes>
     </test>
 
-</suit>
+</suite>
