@@ -8,35 +8,50 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import com.microsoft.playwright.*;
 import java.nio.file.Paths;
 
+
+
 public class BaseTest {
-   protected Playwright playwright;
-   protected Browser browser;
-   protected Page page;
+    protected Playwright playwright;
+    protected Browser browser;
+    protected BrowserContext context;
+    protected Page page;
 
-   @BeforeMethod
+    @BeforeMethod
     public void setUp() {
-      playwright = Playwright.create();
-      browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(5000));
-      page = browser.newPage();
-    }
+        playwright = Playwright.create();
 
+        browser = playwright.chromium().launch(
+                new BrowserType.LaunchOptions().setHeadless(true));
 
-    @AfterMethod
-    public  void tearDown() {
-   if (browser != null) browser.close();
-   if (playwright != null) playwright.close();
+        context = browser.newContext(new Browser.NewContextOptions()
+                .setViewportSize(1920, 1080)
+                .setLocale("en-IN")
+                .setTimezoneId("Asia/Kolkata"));
+
+        page = context.newPage();
     }
 
     @AfterMethod(alwaysRun = true)
-    public void captureOnFailure(ITestResult result) {
+    public void tearDown(ITestResult result) {
+        // 1. Capture the screenshot FIRST, while the page is still open
         if (result.getStatus() == ITestResult.FAILURE && page != null) {
-            System.out.println("FAILED PAGE URL: " + page.url());
-            System.out.println("FAILED PAGE TITLE: " + page.title());
-            page.screenshot(new Page.ScreenshotOptions()
-                    .setPath(Paths.get("target/surefire-reports/failure.png"))
-                    .setFullPage(true));
+            try {
+                System.out.println("FAILED PAGE URL: " + page.url());
+                System.out.println("FAILED PAGE TITLE: " + page.title());
+                page.screenshot(new Page.ScreenshotOptions()
+                        .setPath(Paths.get("target/surefire-reports/failure.png"))
+                        .setFullPage(true));
+            } catch (Exception e) {
+                System.out.println("Could not capture screenshot: " + e.getMessage());
+            }
         }
+
+        // 2. Then close everything
+        if (context != null) context.close();
+        if (browser != null) browser.close();
+        if (playwright != null) playwright.close();
     }
 }
