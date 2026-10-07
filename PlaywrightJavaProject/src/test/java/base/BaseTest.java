@@ -21,13 +21,15 @@ public class BaseTest {
     public void setUp() {
         playwright = Playwright.create();
 
+        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "true"));
         browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(1000));
+                new BrowserType.LaunchOptions().setHeadless(headless));
 
         context = browser.newContext(new Browser.NewContextOptions()
                 .setViewportSize(1920, 1080)
                 .setLocale("en-IN")
-                .setTimezoneId("Asia/Kolkata"));
+                .setTimezoneId("Asia/Kolkata")
+                .setRecordVideoDir(Paths.get("target/surefire-reports/videos/")));
 
         page = context.newPage();
     }
