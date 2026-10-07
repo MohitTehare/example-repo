@@ -11,14 +11,14 @@ public class NaukriBoostAuto extends BaseTest {
     @Test
     public void loginProfileAndBoostProfile() {
 
-        String username = System.getenv("TEST_USERNAME");
-        String password = System.getenv("TEST_PASSWORD");
+        String username = System.getenv("USER_NAME");
+        String password = System.getenv("USER_PAS");
 
         if (username == null || username.isBlank()) {
-            throw new IllegalStateException("TEST_USERNAME is not set. Check the workflow env block and the GitHub secret USER_NAME.");
+            throw new IllegalStateException("USER_NAME is not set. Check the workflow env block and the GitHub secret USER_NAME.");
         }
         if (password == null || password.isBlank()) {
-            throw new IllegalStateException("TEST_PASSWORD is not set. Check the workflow env block and the GitHub secret USER_PAS.");
+            throw new IllegalStateException("USER_PAS is not set. Check the workflow env block and the GitHub secret USER_PAS.");
         }
 
 
