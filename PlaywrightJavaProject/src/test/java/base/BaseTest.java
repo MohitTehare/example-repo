@@ -25,11 +25,13 @@ public class BaseTest {
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions().setHeadless(headless));
 
-        context = browser.newContext(new Browser.NewContextOptions()
-                .setViewportSize(1920, 1080)
-                .setLocale("en-IN")
-                .setTimezoneId("Asia/Kolkata")
-                .setRecordVideoDir(Paths.get("target/surefire-reports/videos/")));
+//        context = browser.newContext(new Browser.NewContextOptions()
+//                .setViewportSize(1920, 1080)
+//                .setLocale("en-IN")
+//                .setTimezoneId("Asia/Kolkata")
+//                .setRecordVideoDir(Paths.get("target/surefire-reports/videos/")));
+        BrowserContext context =browser.newContext(new Browser.NewContextOptions()
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"));
 
         page = context.newPage();
     }
