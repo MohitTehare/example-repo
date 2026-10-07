@@ -1,7 +1,7 @@
 <suit name ="PalywrightSuit">
     <test name="BasicTests">
     <classes>
-        <class name="tests.FirstTest" />
+        <class name="tests.NaukriBoostAuto" />
     </classes>
     </test>
 
