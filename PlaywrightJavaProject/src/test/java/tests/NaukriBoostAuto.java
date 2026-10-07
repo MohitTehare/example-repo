@@ -1,10 +1,13 @@
 package tests;
 
 import base.BaseTest;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitUntilState;
 import org.testng.annotations.Test;
+
+import java.nio.file.Paths;
 
 public class NaukriBoostAuto extends BaseTest {
 
@@ -23,10 +26,16 @@ public class NaukriBoostAuto extends BaseTest {
 
 
         page.navigate("https://www.naukri.com/naukri360",
-                new Page.NavigateOptions().setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
+                new Page.NavigateOptions().setWaitUntil(WaitUntilState.LOAD));
         System.out.println("LOADED URL: " + page.url());
         System.out.println("LOADED TITLE: " + page.title());
-        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Login").setExact(true)).click();;
+        Locator loginLink = page.getByRole(AriaRole.LINK,
+                new Page.GetByRoleOptions().setName("Login").setExact(true));
+        loginLink.waitFor(new Locator.WaitForOptions().setTimeout(60000));
+        page.screenshot(new Page.ScreenshotOptions()
+                .setPath(Paths.get("target/surefire-reports/loaded.png")));
+
+        loginLink.click();
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email ID / Username")).click();
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email ID / Username")).fill(username);
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password")).click();
