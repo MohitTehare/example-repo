@@ -16,15 +16,12 @@ public class NaukriBoostAuto extends BaseTest {
 
         String username = System.getenv("USER_NAME");
         String password = System.getenv("USER_PAS");
-
         if (username == null || username.isBlank()) {
             throw new IllegalStateException("USER_NAME is not set. Check the workflow env block and the GitHub secret USER_NAME.");
         }
         if (password == null || password.isBlank()) {
             throw new IllegalStateException("USER_PAS is not set. Check the workflow env block and the GitHub secret USER_PAS.");
         }
-
-
         page.navigate("https://www.naukri.com/naukri360",
                 new Page.NavigateOptions().setWaitUntil(WaitUntilState.LOAD));
         System.out.println("LOADED URL: " + page.url());
@@ -34,8 +31,10 @@ public class NaukriBoostAuto extends BaseTest {
         loginLink.waitFor(new Locator.WaitForOptions().setTimeout(60000));
         page.screenshot(new Page.ScreenshotOptions()
                 .setPath(Paths.get("target/surefire-reports/loaded.png")));
-
         loginLink.click();
+        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Login")).click();
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Login").setExact(true)).click();
+
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email ID / Username")).click();
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email ID / Username")).fill(username);
         page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password")).click();
@@ -43,6 +42,8 @@ public class NaukriBoostAuto extends BaseTest {
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Login").setExact(true)).click();
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Next")).click();
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Refresh now")).nth(1).click();
+
+
 
 
     }
