@@ -2,8 +2,12 @@ name: Hourly Playwright Test Run
 
 on:
   schedule:
-    - cron: '17 * * * *'   # Runs every hour at minute 17, UTC
-  workflow_dispatch:        # Enables manual Run workflow button
+    - cron: '17 * * * *'   # every hour at minute 17, UTC
+  workflow_dispatch:        # manual "Run workflow" button
+
+concurrency:
+  group: hourly-playwright
+  cancel-in-progress: false
 
 jobs:
   playwright-test:
@@ -13,7 +17,6 @@ jobs:
     env:
       TEST_USERNAME: ${{ secrets.USER_NAME }}
       TEST_PASSWORD: ${{ secrets.USER_PAS }}
-
 
     steps:
       - name: Checkout source code
@@ -27,7 +30,14 @@ jobs:
           cache: maven
 
       - name: Install Playwright browser
-        run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
+        run: mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
 
       - name: Run Playwright tests
         run: mvn clean test
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: target/surefire-reports/
