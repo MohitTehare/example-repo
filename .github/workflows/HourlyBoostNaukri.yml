@@ -19,8 +19,8 @@ jobs:
         working-directory: PlaywrightJavaProject
 
     env:
-      TEST_USERNAME: ${{ secrets.USER_NAME }}
-      TEST_PASSWORD: ${{ secrets.USER_PAS }}
+      USER_NAME: ${{ secrets.USER_NAME }}
+      USER_PAS: ${{ secrets.USER_PAS }}
 
     steps:
       - name: Checkout source code
