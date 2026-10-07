@@ -82,6 +82,16 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile><properties><suiteXmlFile>testng.xml</suiteXmlFile></properties></suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+
+
         </plugins>
     </build>
 </project>

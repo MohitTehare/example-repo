@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    triggers {
+        cron('H * * * *')   // every hour, at a minute Jenkins picks
+    }
+
+    tools {
+        jdk 'JDK17'
+        maven 'Maven3'
+    }
+
+    environment {
+        USER_NAME = credentials('USER_NAME')
+        USER_PAS = credentials('USER_PAS')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Install Playwright browsers') {
+            steps {
+                sh 'mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"'
+            }
+        }
+        stage('Run tests') {
+            steps {
+                sh 'mvn clean test -DsuiteXmlFile=testng.xml'
+            }
+        }
+    }
+
+    post {
+        always {
+            junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+            archiveArtifacts artifacts: 'target/surefire-reports/**', allowEmptyArchive: true
+        }
+    }
+}

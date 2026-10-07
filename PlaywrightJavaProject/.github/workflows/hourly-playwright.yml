@@ -1,0 +1,33 @@
+name: Hourly Playwright Test Run
+
+on:
+  schedule:
+    - cron: '17 * * * *'   # Runs every hour at minute 17, UTC
+  workflow_dispatch:        # Enables manual Run workflow button
+
+jobs:
+  playwright-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      TEST_USERNAME: ${{ secrets.USER_NAME }}
+      TEST_PASSWORD: ${{ secrets.USER_PAS }}
+
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Install Playwright browser
+        run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
+
+      - name: Run Playwright tests
+        run: mvn clean test
