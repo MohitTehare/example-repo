@@ -22,7 +22,7 @@ public class BaseTest {
         playwright = Playwright.create();
 
         browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(5000));
+                new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(1000));
 
         context = browser.newContext(new Browser.NewContextOptions()
                 .setViewportSize(1920, 1080)
