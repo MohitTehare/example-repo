@@ -34,6 +34,8 @@ public class BaseTest {
 //                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebkit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"));
 
         page = context.newPage();
+        page.setDefaultTimeout(90000);
+        page.setDefaultNavigationTimeout(90000);
     }
 
     @AfterMethod(alwaysRun = true)
