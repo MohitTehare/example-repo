@@ -31,8 +31,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: PlaywrightJavaProject/pom.xml
+         
 
       - name: Install Playwright browser
         run: mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
