@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   playwright-test:
-    runs-on: self-hosted
+    runs-on: [self-hosted, macOS]
     timeout-minutes: 30
 
     defaults:
@@ -19,8 +19,8 @@ jobs:
         working-directory: PlaywrightJavaProject
 
     env:
-      USER_NAME: ${{ secrets.USER_NAME }}
-      USER_PAS: ${{ secrets.USER_PAS }}
+      TEST_USERNAME: ${{ secrets.USER_NAME }}
+      TEST_PASSWORD: ${{ secrets.USER_PAS }}
 
     steps:
       - name: Checkout source code
@@ -35,12 +35,10 @@ jobs:
           cache-dependency-path: PlaywrightJavaProject/pom.xml
 
       - name: Install Playwright browser
-        run: mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
+        run: mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
 
-      - name: Run Playwright tests (headed on virtual display)
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
-        run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" mvn clean test -Dheadless=false  
+      - name: Run Playwright tests (headed)
+        run: mvn clean test -Dheadless=false
 
       - name: Upload test reports
         if: always()
